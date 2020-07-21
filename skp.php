@@ -16,12 +16,19 @@ class skp{
     function __construct(){
         add_action('init', [$this, 'custom_post_type']);
     }
+    function register(){
+        add_action('admin_enqueue_scripts', [$this, 'enqueue']);
+    }
 
 
     function custom_post_type(){
         register_post_type('book', ['public'=>true, 'label'=> 'Book']);
     }
 
+    function enqueue(){
+        wp_enqueue_style('mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__ ));
+        wp_enqueue_script('mypluginscript', plugins_url('/assets/myscript.js', __FILE__ ));
+    }
     function activate(){
         // Generate a CPT
         $this->custom_post_type();
@@ -36,6 +43,7 @@ class skp{
 
 if(class_exists('skp')){
     $skp = new skp();
+    $skp->register();
 }
 
 register_activation_hook(__FILE__, [$skp, 'activate']);
