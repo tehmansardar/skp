@@ -30,10 +30,8 @@ class skp{
         wp_enqueue_script('mypluginscript', plugins_url('/assets/myscript.js', __FILE__ ));
     }
     function activate(){
-        // Generate a CPT
-        $this->custom_post_type();
-        // flush rewrite rules
-        flush_rewrite_rules();
+        require_once plugin_dir_path(__FILE__) . 'inc/skp-activate.php';
+        SkpActivate::activate();
     }
     function deactivate(){
         // flush rewrite rules
@@ -47,4 +45,6 @@ if(class_exists('skp')){
 }
 
 register_activation_hook(__FILE__, [$skp, 'activate']);
-register_deactivation_hook(__FILE__, [$skp, 'deactivate']);
+
+require_once plugin_dir_path(__FILE__) . 'inc/skp-deactivate.php';
+register_deactivation_hook(__FILE__, ['SkpDeactivate', 'deactivate']);
