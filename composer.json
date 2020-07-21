@@ -1,0 +1,16 @@
+{
+    "name": "tehman/skontech",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Tehman Sardar",
+            "email": "tehmansardar@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+	"autoload": {
+		"psr-4": {"Inc\\" : "./inc"}  
+	}
+}
