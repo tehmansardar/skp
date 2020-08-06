@@ -5,10 +5,10 @@
 
 namespace Inc\Base;
 
-class Enqueue
-{
-    public $ver;
+use \Inc\Base\BaseController;
 
+class Enqueue extends BaseController
+{
     public function register()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue']);
@@ -16,8 +16,8 @@ class Enqueue
 
     public function enqueue()
     {
-        $this->ver = SKP_DEV ? time() : false;
-        wp_enqueue_style('mypluginstyle', PLUGIN_URL . 'assets/mystyle.css', [], $this->ver, 'all');
-        wp_enqueue_script('mypluginscript', PLUGIN_URL . 'assets/myscript.js', [], $this->ver, true);
+        $this->dev = $this->dev ? time() : false;
+        wp_enqueue_style('mypluginstyle', $this->plugin_url . 'assets/mystyle.css', [], $this->dev, 'all');
+        wp_enqueue_script('mypluginscript', $this->plugin_url . 'assets/myscript.js', [], $this->dev, true);
     }
 }
