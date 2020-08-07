@@ -12,6 +12,7 @@ class Admin extends BaseController
 {
     public $settings;
     public $pages = [];
+    public $subPages = [];
 
     public function __construct()
     {
@@ -27,9 +28,20 @@ class Admin extends BaseController
                 'position' => 110,
             ],
         ];
+
+        $this->subPages = [
+            [
+                'parent_slug' => 'skp',
+                'page-title' => 'CPT Manager',
+                'menu-title' => 'CPT Manager',
+                'capability' => 'manage_options',
+                'menu-slug' => 'cpt_manager',
+                'callback' => function () {echo '<h1>CPT Manager</h1>';},
+            ],
+        ];
     }
     public function register()
     {
-        $this->settings->addPages($this->pages)->register();
+        $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subPages)->register();
     }
 }
