@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @package skontechplugin
  */
+
 namespace Inc\Api;
 
 class SettingsApi
@@ -10,11 +12,22 @@ class SettingsApi
 
     public $admin_subPages = [];
 
+    // Settings Api
+    public $settings = [];
+
+    public $sections = [];
+
+    public $fields = [];
+
     public function register()
     {
         if (!empty($this->admin_pages)) {
 
             add_action('admin_menu', [$this, 'addAdminMenu']);
+        }
+
+        if (!empty($this->settings)) {
+            add_action('admin_init', [$this, 'registerCustomFields']);
         }
     }
 
@@ -52,6 +65,26 @@ class SettingsApi
         return $this;
     }
 
+
+    // Settings API
+    public function setSettings(array $settings)
+    {
+        $this->settings = $settings;
+        return $this;
+    }
+
+    public function setSections(array $sections)
+    {
+        $this->sections = $sections;
+        return $this;
+    }
+
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
+        return $this;
+    }
+
     public function addAdminMenu()
     {
         foreach ($this->admin_pages as $page) {
@@ -78,4 +111,36 @@ class SettingsApi
         }
     }
 
+    public function registerCustomFields()
+    {
+        // register settings
+        foreach ($this->settings as $setting) {
+            register_setting(
+                $setting['option_group'],
+                $setting['option_name'],
+                (isset($setting['callback']) ? $setting['callback'] : '')
+            );
+        }
+
+        // add sections
+        foreach ($this->sections as $section) {
+            add_settings_section(
+                $section['id'],
+                $section['title'],
+                (isset($section['callback']) ? $section['callback'] : ''),
+                $section['page']
+            );
+        }
+
+        foreach ($this->fields as $field) {
+            add_settings_field(
+                $field['id'],
+                $field['title'],
+                (isset($field['callback']) ? $field['callback'] : ''),
+                $field['page'],
+                $field['section'],
+                (isset($field['args']) ? $field['args'] : '')
+            );
+        }
+    }
 }

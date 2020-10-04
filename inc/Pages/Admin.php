@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package skontechplugin
  */
@@ -21,6 +22,10 @@ class Admin extends BaseController
         $this->callbacks = new AdminCallbacks();
         $this->setPages();
         $this->setSubPages();
+
+        $this->setSettings();
+        $this->setSections();
+        $this->setFields();
 
         $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subPages)->register();
     }
@@ -68,5 +73,66 @@ class Admin extends BaseController
                 'callback' => [$this->callbacks, 'adminWidget'],
             ],
         ];
+    }
+
+    public function setSettings()
+    {
+        $args = [
+            [
+                'option_group'  =>  'skp_option_group',
+                'option_name'   =>  'text_example',
+                'callback'      =>  [$this->callbacks, 'skpOptionGroup']
+            ],
+            [
+                'option_group'  =>  'skp_option_group',
+                'option_name'   =>  'first_name'
+            ]
+        ];
+
+        $this->settings->setSettings($args);
+    }
+
+    public function setSections()
+    {
+        $args = [
+            [
+                'id'            =>      'skp_admin_index',
+                'title'         =>      'Settings',
+                'callback'      =>      [$this->callbacks, 'skpAdminIndex'],
+                'page'          =>      'skp'
+            ]
+        ];
+
+        $this->settings->setSections($args);
+    }
+
+    public function setFields()
+    {
+        $args = [
+            [
+                'id'        =>      'text_example',
+                'title'     =>      'Text Example',
+                'callback'  =>      [$this->callbacks, 'skpTextExample'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'text_example',
+                    'class'         =>  'example_class'
+                ]
+            ],
+            [
+                'id'        =>      'first_name',
+                'title'     =>      'First Name',
+                'callback'  =>      [$this->callbacks, 'skpFirstName'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'first_name',
+                    'class'         =>  'first_name'
+                ]
+            ],
+        ];
+
+        $this->settings->setFields($args);
     }
 }
