@@ -7,6 +7,7 @@
 namespace Inc\Pages;
 
 use \Inc\Api\Callbacks\AdminCallbacks;
+use \Inc\Api\Callbacks\ManagerCallbacks;
 use \Inc\Api\SettingsApi;
 use \Inc\Base\BaseController;
 
@@ -14,12 +15,14 @@ class Admin extends BaseController
 {
     public $settings;
     public $callbacks;
+    public $callbacks_mngr;
     public $pages = [];
     public $subPages = [];
     public function register()
     {
-        $this->settings = new SettingsApi();
-        $this->callbacks = new AdminCallbacks();
+        $this->settings         = new SettingsApi();
+        $this->callbacks        = new AdminCallbacks();
+        $this->callbacks_mngr   = new ManagerCallbacks();
         $this->setPages();
         $this->setSubPages();
 
@@ -79,14 +82,51 @@ class Admin extends BaseController
     {
         $args = [
             [
-                'option_group'  =>  'skp_option_group',
-                'option_name'   =>  'text_example',
-                'callback'      =>  [$this->callbacks, 'skpOptionGroup']
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'cpt_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
             ],
             [
-                'option_group'  =>  'skp_option_group',
-                'option_name'   =>  'first_name'
-            ]
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'taxonomy_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'media_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'gallery_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'testimonial_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'templates_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'login_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'membership_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+            [
+                'option_group'  =>  'skp_settings',
+                'option_name'   =>  'chat_manager',
+                'callback'      =>  [$this->callbacks_mngr, 'checkboxSanitize']
+            ],
+
         ];
 
         $this->settings->setSettings($args);
@@ -97,8 +137,8 @@ class Admin extends BaseController
         $args = [
             [
                 'id'            =>      'skp_admin_index',
-                'title'         =>      'Settings',
-                'callback'      =>      [$this->callbacks, 'skpAdminIndex'],
+                'title'         =>      'Settings Manager',
+                'callback'      =>      [$this->callbacks_mngr, 'adminSectionManger'],
                 'page'          =>      'skp'
             ]
         ];
@@ -110,25 +150,91 @@ class Admin extends BaseController
     {
         $args = [
             [
-                'id'        =>      'text_example',
-                'title'     =>      'Text Example',
-                'callback'  =>      [$this->callbacks, 'skpTextExample'],
+                'id'        =>      'cpt_manager',
+                'title'     =>      'Activate CPT Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
                 'page'      =>      'skp',
                 'section'   =>      'skp_admin_index',
                 'args'      =>      [
-                    'label_for'     =>  'text_example',
-                    'class'         =>  'example_class'
+                    'label_for'     =>  'cpt_manager',
+                    'class'         =>  'ui-toggle'
                 ]
             ],
             [
-                'id'        =>      'first_name',
-                'title'     =>      'First Name',
-                'callback'  =>      [$this->callbacks, 'skpFirstName'],
+                'id'        =>      'taxonomy_manager',
+                'title'     =>      'Activate Taxonomy Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
                 'page'      =>      'skp',
                 'section'   =>      'skp_admin_index',
                 'args'      =>      [
-                    'label_for'     =>  'first_name',
-                    'class'         =>  'first_name'
+                    'label_for'     =>  'taxonomy_manager',
+                    'class'         =>  'ui-toggle'
+                ]
+            ],
+            [
+                'id'        =>      'gallery_manager',
+                'title'     =>      'Activate Gallery Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'gallery_manager',
+                    'class'         =>  'ui-toggle'
+                ]
+            ],
+            [
+                'id'        =>      'testimonial_manager',
+                'title'     =>      'Activate Testimonial Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'testimonial_manager',
+                    'class'         =>  'ui-toggle'
+                ]
+            ],
+            [
+                'id'        =>      'templates_manager',
+                'title'     =>      'Activate Templates Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'templates_manager',
+                    'class'         =>  'ui-toggle'
+                ]
+            ],
+            [
+                'id'        =>      'login_manager',
+                'title'     =>      'Activate Login Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'login_manager',
+                    'class'         =>  'ui-toggle'
+                ]
+            ],
+            [
+                'id'        =>      'membership_manager',
+                'title'     =>      'Activate Membership Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'membership_manager',
+                    'class'         =>  'ui-toggle'
+                ]
+            ],
+            [
+                'id'        =>      'chat_manager',
+                'title'     =>      'Activate Chat Manager',
+                'callback'  =>      [$this->callbacks_mngr, 'checkboxField'],
+                'page'      =>      'skp',
+                'section'   =>      'skp_admin_index',
+                'args'      =>      [
+                    'label_for'     =>  'chat_manager',
+                    'class'         =>  'ui-toggle'
                 ]
             ],
         ];

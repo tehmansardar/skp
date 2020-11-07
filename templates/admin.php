@@ -13,7 +13,7 @@
         <div class="active tab-pane" id="tab-1">
             <form method="post" action="options.php">
                 <?php
-                settings_fields('skp_option_group');
+                settings_fields('skp_settings');
                 do_settings_sections('skp');
                 submit_button();
                 ?>

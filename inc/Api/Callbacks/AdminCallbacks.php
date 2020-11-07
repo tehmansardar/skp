@@ -11,15 +11,15 @@ use \Inc\Base\BaseController;
 class AdminCallBacks extends BaseController
 {
 
-    public function skpOptionGroup($input)
-    {
-        return $input;
-    }
+    // public function skpOptionGroup($input)
+    // {
+    //     return $input;
+    // }
 
-    public function skpAdminIndex()
-    {
-        echo 'Check this beautiful section';
-    }
+    // public function skpAdminIndex()
+    // {
+    //     echo 'Check this beautiful section';
+    // }
 
     public function skpTextExample()
     {
